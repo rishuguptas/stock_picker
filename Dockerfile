@@ -19,9 +19,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy all files from the backend folder to the container's /app
 COPY backend/ .
 
-# Expose port
-ENV PORT=8080
-EXPOSE 8080
+# Expose port (Hugging Face Spaces standard is 7860)
+ENV PORT=7860
+EXPOSE 7860
 
 # Run the app
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "1", "--threads", "2", "--timeout", "120", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:7860", "--workers", "1", "--threads", "2", "--timeout", "120", "app:app"]
