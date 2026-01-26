@@ -15,7 +15,7 @@ Back4App Containers is a great choice for hosting the Python backend because it 
 4.  **Configure**:
     *   **App Name**: `bharat-cap-backend` (or similar).
     *   **Branch**: `main` (or whatever branch you use).
-    *   **Root Directory**: `backend` (IMPORTANT: Tell it to look in the backend folder!).
+    *   **Root Directory**: `/` (Keep as default! The Dockerfile now handles the subfolder).
     *   **Auto-Deploy**: Yes.
 5.  **Environment Variables**:
     *   Add `FLASK_ENV` = `production`
