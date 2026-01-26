@@ -12,16 +12,24 @@ Since this is a POC, we have merged the Frontend and Backend into a single deplo
 6.  **Hardware**: Select **"CPU basic - 2 vCPU - 16 GB - FREE"**.
 7.  **Create Space**.
 
-## Step 2: Push your code
+## Step 2: Push your code (The "One-Shot" Way)
 
-Since we merged the apps, you need to upload **all** your project files.
+The easiest and fastest way to upload folders is to **link your GitHub repository**.
 
-1.  In your Space, go to the **"Files"** tab.
-2.  Click **"Add File" -> "Upload Files"**.
-3.  Upload **Everything** (folders: `backend/`, `frontend/`, files: `Dockerfile`, `.gitignore`).
-4.  **Wait**: Hugging Face will take 2-4 minutes to build the project. It is:
-    *   Installing Node.js & Building the React app.
-    *   Installing Python & Starting the Flask server.
+1.  In your new Space, look for the **"Settings"** tab.
+2.  Scroll down to **"Repository Settings"**.
+3.  Click **"Manage connected repository"** or **"Link a GitHub repository"**.
+4.  Select your `rishuguptas/stock_picker` repo.
+5.  **Done!** Hugging Face will instantly pull all your folders (`frontend/`, `backend/`, etc.) and start building.
+
+### Alternative: If you don't want to link GitHub
+Hugging Face Spaces are actually Git repositories themselves. You can push to them just like GitHub:
+1.  Copy the Space's Git URL (it looks like `https://huggingface.co/spaces/YOUR_NAME/YOUR_SPACE`).
+2.  In your terminal:
+    ```bash
+    git remote add hf https://huggingface.co/spaces/YOUR_NAME/YOUR_SPACE
+    git push hf main --force
+    ```
 
 ## Step 3: View your App
 

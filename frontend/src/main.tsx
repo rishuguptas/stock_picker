@@ -1,15 +1,17 @@
-import React, { Component, type ErrorInfo, type ReactNode } from 'react';
+import React, { Component, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
-// import { GlobalErrorBoundary } from './GlobalErrorBoundary';
 
 // Inline Error Boundary to rule out import errors
 class InlineErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean, error: any }> {
-  state = { hasError: false, error: null };
+  constructor(props: { children: ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
   static getDerivedStateFromError(error: any) { return { hasError: true, error }; }
   render() {
-    if (this.state.hasError) return <div style={{ padding: 40, background: 'red', color: 'white' }}>INLINE ERROR: {this.state.error?.toString()}</div>;
+    if (this.state.hasError) return <div style={{ padding: 40, background: 'red', color: 'white' }}>INLINE ERROR: {String(this.state.error)}</div>;
     return this.props.children;
   }
 }

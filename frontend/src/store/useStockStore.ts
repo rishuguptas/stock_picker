@@ -2,10 +2,6 @@ import { create } from 'zustand';
 import type { Stock, ScreeningCriteria } from '../types';
 import { apiService } from '../services/api';
 
-const MOCK_STOCKS: Stock[] = [
-    { symbol: 'MOCK_RELIANCE', name: 'Reliance Industries', last_price: 2500, close_price: 2400, open_price: 2450, high_price: 2550, low_price: 2380, prev_close: 2400, volume: 100000, market_cap: 1600000, pe_ratio: 25, p_change: 4.1, return_1y: 15.5 },
-];
-
 interface StockState {
     stocks: Stock[];
     loading: boolean;
