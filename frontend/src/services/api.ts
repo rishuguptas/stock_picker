@@ -5,8 +5,9 @@ let apiClient: AxiosInstance | null = null;
 
 const getClient = (): AxiosInstance => {
     if (!apiClient) {
-        const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-        console.log('API Service: Initializing client with base URL:', API_BASE_URL);
+        // For merged deployment on Hugging Face, use relative path
+        const API_BASE_URL = '/api';
+        console.log('API Service: Merged Deployment - using relative /api');
         apiClient = axios.create({
             baseURL: API_BASE_URL,
             headers: {

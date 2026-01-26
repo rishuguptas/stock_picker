@@ -1,49 +1,36 @@
-# Deploying to Hugging Face Spaces (No Credit Card Required)
+# Deploying POC to Hugging Face Spaces (All-in-One)
 
-Hugging Face Spaces is the best free alternative. It gives you **16 GB RAM** (huge!) and does **not** require a credit card.
+Since this is a POC, we have merged the Frontend and Backend into a single deployment. You just need to upload everything to Hugging Face.
 
 ## Step 1: Create a Hugging Face Space
 
-1.  **Sign Up**: Go to [HuggingFace.co](https://huggingface.co/join) and create a free account.
-2.  **New Space**: Click your profile picture (top right) -> **"New Space"**.
-3.  **Configure**:
-    *   **Space Name**: `bharat-cap-api` (or similar).
-    *   **License**: `apache-2.0` (or leave default).
-    *   **SDK**: Select **"Docker"**.
-    *   **Template**: Select **"Blank"**.
-    *   **Hardware**: Select **"CPU basic - 2 vCPU - 16 GB - FREE"**.
-4.  **Create Space**: Click **"Create Space"**.
+1.  Go to [HuggingFace.co](https://huggingface.co/spaces) and log in.
+2.  **New Space**: Click **"New Space"**.
+3.  **Space Name**: `bharat-cap` (or any name).
+4.  **SDK**: Select **"Docker"**.
+5.  **Template**: Select **"Blank"**.
+6.  **Hardware**: Select **"CPU basic - 2 vCPU - 16 GB - FREE"**.
+7.  **Create Space**.
 
-## Step 2: Push your code to the Space
+## Step 2: Push your code
 
-There are two ways to do this. The easiest is using their website:
+Since we merged the apps, you need to upload **all** your project files.
 
-1.  In your new Space, go to the **"Files"** tab.
+1.  In your Space, go to the **"Files"** tab.
 2.  Click **"Add File" -> "Upload Files"**.
-3.  Upload **only these files**:
-    *   `Dockerfile` (from the root directory)
-    *   `backend/` (upload the entire folder)
-    *   `existing_app/` (optional, not needed for API)
-4.  **Commit changes** (bottom of the page).
+3.  Upload **Everything** (folders: `backend/`, `frontend/`, files: `Dockerfile`, `.gitignore`).
+4.  **Wait**: Hugging Face will take 2-4 minutes to build the project. It is:
+    *   Installing Node.js & Building the React app.
+    *   Installing Python & Starting the Flask server.
 
-Hugging Face will automatically see your `Dockerfile`, build the image, and start the app.
-Once done, it will say **"Running"**.
+## Step 3: View your App
 
-## Step 3: Get your API URL
+Once the status says **"Running"**, just click the **"See App"** button or visit:
+`https://YOUR_USERNAME-YOUR_SPACE_NAME.hf.space`
 
-1.  Your API URL will be: `https://YOUR_USERNAME-YOUR_SPACE_NAME.hf.space`
-2.  **Wait**: Flask inside the space usually runs on port **7860** by default (Hugging Face standard).
+---
 
-## Step 4: Update Dockerfile (Crucial for HF Spaces)
+### Managing Changes
+Every time you push a change to your GitHub repo (if you linked it) or upload a new file, Hugging Face will automatically rebuild your site.
 
-Hugging Face expects the app on port **7860**. I am updating your Dockerfile to handle this.
-
-1.  I have updated your local `Dockerfile`.
-2.  Please push the update to GitHub, or upload the new version to Hugging Face.
-
-## Step 5: Update Frontend (Vercel)
-
-1.  Go to your Vercel Dashboard for the `stock_picker` frontend.
-2.  Update the `VITE_API_URL` environment variable to your new Hugging Face URL + `/api`.
-    *   Example: `https://rishuguptas-bharat-cap-api.hf.space/api`
-3.  Redeploy the Frontend.
+**No more Vercel needed!** Everything is now in this one URL.
