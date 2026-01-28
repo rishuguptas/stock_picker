@@ -111,7 +111,7 @@ export const Sidebar: React.FC = () => {
             <div className="mt-auto pt-8 border-t border-slate-100 hidden lg:block">
                 <div className="bg-slate-50 p-4 rounded-xl">
                     <p className="text-[10px] text-slate-400 font-medium leading-relaxed">
-                        Data sourced directly from NSE Bhavcopy. Caching active (5 min).
+                        Data sourced directly from NSE Bhavcopy.
                     </p>
                 </div>
             </div>

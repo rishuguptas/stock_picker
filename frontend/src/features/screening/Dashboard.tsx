@@ -14,9 +14,6 @@ export const Dashboard: React.FC = () => {
                         <header className="flex items-center justify-between">
                             <div>
                                 <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Market Discoveries</h2>
-                                <p className="text-slate-500 text-sm mt-1">
-                                    Displaying mock data (Safe Mode)
-                                </p>
                             </div>
                         </header>
                         <StockTable />
