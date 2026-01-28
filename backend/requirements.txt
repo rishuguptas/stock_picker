@@ -1,8 +1,0 @@
-flask
-flask-cors
-python-dotenv
-pandas
-numpy
-pydantic
-git+https://github.com/RuchiTanmay/nselib.git
-gunicorn
