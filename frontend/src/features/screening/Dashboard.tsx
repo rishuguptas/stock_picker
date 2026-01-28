@@ -11,11 +11,6 @@ export const Dashboard: React.FC = () => {
                 <Sidebar />
                 <main className="flex-1 bg-slate-50 p-8 overflow-y-auto">
                     <div className="max-w-6xl mx-auto space-y-8">
-                        <header className="flex items-center justify-between">
-                            <div>
-                                <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Market Discoveries</h2>
-                            </div>
-                        </header>
                         <StockTable />
                     </div>
                 </main>
