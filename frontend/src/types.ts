@@ -12,6 +12,7 @@ export interface Stock {
     pe_ratio: number | null;
     p_change: number;
     return_1y: number | null;
+    instrument_type: string;
 }
 
 export interface ScreeningCriteria {

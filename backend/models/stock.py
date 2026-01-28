@@ -18,6 +18,7 @@ class StockData(BaseModel):
     p_change: Optional[float] = None # daily % change
     # Performance Returns
     return_1y: Optional[float] = None
+    instrument_type: Optional[str] = None # Stock, Debenture, Option, Future
 
 class ScreeningCriteria(BaseModel):
     min_market_cap: Optional[float] = None # in Crores

@@ -52,6 +52,28 @@ class StockService:
             logger.error(f"Failed to fetch historical anchor: {e}")
             return {}
 
+    def _categorize_instrument(self, row: pd.Series) -> str:
+        """Map NSE metadata to Stock, Debenture, Option, or Future."""
+        tp = str(row.get('FinInstrmTp', '')).upper()
+        srs = str(row.get('SctySrs', '')).upper()
+        
+        if tp in ['STO', 'IDO']:
+            return "Option"
+        if tp in ['STF', 'IDF']:
+            return "Future"
+        
+        # In Equities Bhavcopy
+        if tp == 'STK':
+            # Series EQ, BE, BZ, SM are usually stocks/SME
+            if srs in ['EQ', 'BE', 'BZ', 'SM', 'ST']:
+                return "Stock"
+            # Series N1-N9, ND, Y1-Y9 are usually debt
+            if srs.startswith('N') or srs.startswith('Y') or srs == 'GB':
+                return "Debenture"
+            return "Stock" # Default
+            
+        return "Other"
+
     def fetch_all_stocks(self, date_str: str = None) -> List[Dict[str, Any]]:
         """Fetch daily bhavcopy (with holiday retry) and return cached data."""
         
@@ -99,14 +121,25 @@ class StockService:
 
             equity_list = capital_market.equity_list()
             
-            # 3. Merge Strategies
-            merged = pd.merge(bhavcopy, detail_df[['symbol', 'totalMarketCap', 'issuedCap']], left_on='TckrSymb', right_on='symbol', how='left')
+            # 4. Fetch Derivatives (New: Story 2.2)
+            from nselib import derivatives
+            try:
+                fno_bhav = derivatives.fno_bhav_copy(valid_date_str)
+            except Exception:
+                fno_bhav = pd.DataFrame()
+
+            # 5. Merge Strategy - Combine Equities and Derivatives
+            # Standardize columns if necessary (though they seem identical in nselib 1.0+)
+            combined = pd.concat([bhavcopy, fno_bhav], ignore_index=True)
+            
+            # Merge with details (mainly for equities market cap)
+            merged = pd.merge(combined, detail_df[['symbol', 'totalMarketCap', 'issuedCap']], left_on='TckrSymb', right_on='symbol', how='left')
             merged = pd.merge(merged, pe_df[['SYMBOL', 'SYMBOLP/E']], left_on='TckrSymb', right_on='SYMBOL', how='left')
             merged = pd.merge(merged, equity_list[['SYMBOL', 'NAME OF COMPANY']], left_on='TckrSymb', right_on='SYMBOL', suffixes=('', '_m'), how='left')
             
-            # 4. Duplicate cleanup (Data is available now)
+            # 6. Duplicate cleanup (Data is available now)
             if not merged.empty:
-               merged = merged.drop_duplicates(subset=['TckrSymb'], keep='first')
+               merged = merged.drop_duplicates(subset=['TckrSymb', 'FinInstrmId'], keep='first')
 
             # 5. Process Stocks
             hist_prices = self._fetch_historical_anchor(365)
@@ -140,7 +173,8 @@ class StockService:
                         "market_cap": float(mkt_cap) if pd.notnull(mkt_cap) else None,
                         "pe_ratio": float(row['SYMBOLP/E']) if pd.notnull(row.get('SYMBOLP/E')) and row['SYMBOLP/E'] != '-' else None,
                         "p_change": round(((last_price - prev_close) / prev_close * 100), 2) if prev_close else 0,
-                        "return_1y": return_1y
+                        "return_1y": return_1y,
+                        "instrument_type": self._categorize_instrument(row)
                     }
                     validated = StockData(**stock_dict)
                     stocks.append(validated.model_dump())
