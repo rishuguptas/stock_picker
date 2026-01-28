@@ -28,7 +28,7 @@ export const useStockStore = create<StockState>((set, get) => ({
         try {
             console.log("STORE: Fetching REAL stocks from API...");
             const response = await apiService.getAllStocks();
-            set({ stocks: response.data, loading: false });
+            set({ stocks: response.data.data, loading: false });
         } catch (err: any) {
             console.error("STORE ERROR:", err);
             set({ error: err.message || 'Failed to fetch stocks', loading: false });
@@ -46,7 +46,7 @@ export const useStockStore = create<StockState>((set, get) => ({
         try {
             console.log("STORE: Screening REAL stocks...", get().criteria);
             const response = await apiService.screenStocks(get().criteria);
-            set({ stocks: response.data, loading: false });
+            set({ stocks: response.data.data, loading: false });
         } catch (err: any) {
             console.error("STORE SCREENING ERROR:", err);
             set({ error: err.message || 'Screening failed', loading: false });
