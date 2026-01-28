@@ -19,15 +19,25 @@ const getClient = (): AxiosInstance => {
 };
 
 export const apiService = {
-    async getAllStocks(): Promise<ApiResponse<Stock[]>> {
+    async getAllStocks(sortBy?: string, sortOrder?: string): Promise<ApiResponse<Stock[]>> {
         const client = getClient();
-        const response = await client.get<ApiResponse<Stock[]>>('/stocks/all');
+        const params = new URLSearchParams();
+        if (sortBy) params.append('sort_by', sortBy);
+        if (sortOrder) params.append('sort_order', sortOrder);
+
+        const response = await client.get<ApiResponse<Stock[]>>(
+            `/stocks/all${params.toString() ? '?' + params.toString() : ''}`
+        );
         return response.data;
     },
 
-    async screenStocks(criteria: ScreeningCriteria): Promise<ApiResponse<Stock[]>> {
+    async screenStocks(criteria: ScreeningCriteria, sortBy?: string, sortOrder?: string): Promise<ApiResponse<Stock[]>> {
         const client = getClient();
-        const response = await client.post<ApiResponse<Stock[]>>('/stocks/screen', criteria);
+        const payload = { ...criteria };
+        if (sortBy) (payload as any).sort_by = sortBy;
+        if (sortOrder) (payload as any).sort_order = sortOrder;
+
+        const response = await client.post<ApiResponse<Stock[]>>('/stocks/screen', payload);
         return response.data;
     },
 

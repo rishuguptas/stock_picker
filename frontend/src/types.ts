@@ -26,5 +26,6 @@ export interface ScreeningCriteria {
 export interface ApiResponse<T> {
     data: T;
     count: number;
+    total_available: number;
     error: { code: string; message: string } | null;
 }

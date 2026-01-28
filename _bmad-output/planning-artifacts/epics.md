@@ -25,7 +25,7 @@ FR6: Implement a modern, responsive dark-mode UI for stock discovery.
 ### NonFunctional Requirements
 
 NFR1: Accuracy - Data metrics must match NSE-reported values precisely; no simulated multipliers.
-NFR2: Performance - Stock screening must complete in under 5 seconds for up to 500 stocks.
+NFR2: Performance - Stock screening must complete in under 5 seconds for up to 50 stocks displayed (sorted from full dataset).
 NFR3: Reliability - Implement graceful error handling for NSE API limits and network issues.
 NFR4: Usability - UI must be intuitive for retail investors with clear filtering controls.
 
@@ -95,8 +95,8 @@ So that I can isolate high-potential investment opportunities.
 
 **Given** a criteria object with min/max values for ROE and Debt-to-Equity
 **When** the `/api/stocks/screen` endpoint is called
-**Then** the backend filters the cached NSE dataset
-**And** returns only the stocks that satisfy all conditions within 5 seconds.
+**Then** the backend filters and sorts the cached NSE dataset
+**And** returns only the top 50 stocks that satisfy all conditions within 5 seconds.
 
 ### Story 2.2: Modern Dark-Mode Screening UI
 As a retail investor,
@@ -106,9 +106,9 @@ So that I have a premium and efficient research experience.
 **Acceptance Criteria:**
 
 **Given** the React frontend is running
-**When** a user adjusts the filter sliders or inputs
-**Then** the UI triggers an API call to the backend
-**And** the results are displayed in a sortable, sort-oriented grid system
+**When** a user adjusts the filter sliders or inputs or changes sorting
+**Then** the UI triggers an API call to the backend with sorting parameters
+**And** the top 50 results are displayed in a sortable, sort-oriented grid system
 **And** the app follows the modern dark-mode aesthetic.
 
 ---

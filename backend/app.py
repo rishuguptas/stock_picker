@@ -27,10 +27,20 @@ def health_check():
 def get_all_stocks():
     """Fetch all stocks from the daily discovery engine."""
     try:
-        stocks = stock_service.fetch_all_stocks()
+        # Get sorting parameters from query string
+        sort_by = request.args.get('sort_by', None)
+        sort_order = request.args.get('sort_order', 'asc')
+        
+        # Fetch stocks with limit, get total count from cache
+        all_stocks = stock_service.fetch_all_stocks(sort_by=sort_by, sort_order=sort_order, limit=50)
+        total_count = stock_service.get_total_count()
+        
+        print(f"DEBUG: all_stocks length = {len(all_stocks)}, total_count = {total_count}")
+        
         return jsonify({
-            "data": stocks,
-            "count": len(stocks),
+            "data": all_stocks,
+            "count": len(all_stocks),
+            "total_available": total_count,
             "error": None
         }), 200
     except Exception as e:
@@ -46,12 +56,22 @@ def get_all_stocks():
 def screen_stocks():
     """Screen stocks based on user criteria."""
     try:
-        criteria = request.get_json()
-        # Initial validation will happen in the service or here if complex
-        filtered_stocks = stock_service.screen_stocks(criteria)
+        request_data = request.get_json() or {}
+        criteria = {k: v for k, v in request_data.items() if k not in ['sort_by', 'sort_order']}
+        
+        # Get sorting parameters from request body
+        sort_by = request_data.get('sort_by', None)
+        sort_order = request_data.get('sort_order', 'asc')
+        
+        # Screen stocks with limit
+        filtered_stocks = stock_service.screen_stocks(criteria, sort_by=sort_by, sort_order=sort_order, limit=50)
+        # Get total filtered count (without limit)
+        total_filtered = stock_service.get_filtered_count(criteria)
+        
         return jsonify({
             "data": filtered_stocks,
             "count": len(filtered_stocks),
+            "total_available": total_filtered,
             "error": None
         }), 200
     except Exception as e:

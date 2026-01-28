@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Header } from '../shared/Header';
 import { Sidebar } from '../shared/Sidebar';
 import { StockTable } from './StockTable';
+import { useStockStore } from '../../store/useStockStore';
 
 export const Dashboard: React.FC = () => {
+    const { fetchStocks } = useStockStore();
+
+    useEffect(() => {
+        // Fetch stocks on mount
+        fetchStocks();
+    }, [fetchStocks]);
+
     return (
         <div style={{ padding: '0px' }}>
             <Header />
