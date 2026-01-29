@@ -10,6 +10,8 @@ app_port: 7860
 
 # Bharat Cap - Stock Picker POC
 
+**Build Status**: Updated - 2026-01-29 08:45 AM
+
 A unified stock discovery engine built with:
 - **Backend**: Python/Flask + `nselib`
 - **Frontend**: React + TypeScript + Tailwind
