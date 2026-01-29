@@ -80,6 +80,19 @@ So that I can trust the results of my stock screening.
 **And** it applies a manual calculation fallback (Price * Shares Outstanding) ONLY if the provided figure is absent, zero, or clearly incorrect
 **And** the resulting metrics are validated for consistency.
 
+### Story 1.3: Sophisticated Financial Instrument Categorization
+**Status: Incomplete**
+As a retail investor,
+I want the screener to accurately distinguish between Stocks, Debentures, Treasury Bills, and Trusts,
+So that I don't accidentally evaluate a bond using equity metrics.
+
+**Acceptance Criteria:**
+
+**Given** the latest NSE bhavcopy data
+**When** the system processes the `FinInstrmTp` and `SctySrs` metadata
+**Then** it correctly identifies NCDs (Series Z, A, N), Govt Securities (GS, TB), and Trusts (IV, RR)
+**And** it filters non-equity instruments out of the default "Stock" view if requested.
+
 ---
 
 ## Epic 2: Intelligent Stock Screener & UI
